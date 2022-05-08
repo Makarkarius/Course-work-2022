@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="nodes" id="nodes">
+
+    </div>
+    <div class="center-block">
+        <div class="trie" id="canvas-block"></div>
+        <div class="info-block" id="info-block"></div>
+    </div>
+    <div class="controls">
+        <div class="btns">
+            <button id="prev-step" disabled>Previous step</button>
+            <button id="next-step" disabled>Next step</button>
+            <button id="reset">Clear all</button>
+        </div>
+        <form>
+            <label>
+                <input type="text" id="add-input" maxlength="20" minlength="1">
+                <input type="submit" value="Add" id="add-input-submit">
+            </label>
+        </form>
+        <form>
+            <label>
+                <input type="text" id="find-input" maxlength="100" minlength="1">
+                <input type="submit" value="Find" id="find-input-submit">
+            </label>
+        </form>
+
+        <h2>Dictionary</h2>
+        <div id="dictionary"></div>
+        <h2>Result</h2>
+        <div id="result"></div>
+    </div>
+</div>
+<script src="https://unpkg.com/konva@8/konva.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+<script src="script/init.js"></script>
+<script src="script/util.js"></script>
+<script src="script/actions.js"></script>
+<script src="script/action-list.js"></script>
+<script src="script/aho-corasick.js"></script>
+<script src="script/tree.js"></script>
+<script src="script/controller.js"></script>
+<script src="script/main.js"></script>
+</body>
+</html>
