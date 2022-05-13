@@ -130,18 +130,24 @@ class AhoCorasick {
 		for (let i = 0; i < str.length; ++i) {
 			const char = str.charAt(i);
 
-			this.actions.push(hlNode, [curr]);
-			this.actions.tail.push(writeFindLet, [curr, str, i]);
+			if (i === 0) {
+				this.actions.push(hlNode, [curr]);
+			} else {
+				this.actions.tail.push(hlNode, [curr]);
+			}
+			this.actions.push(writeFindLet, [curr, str, i]);
 
 			let prev = null;
 			for (let [ch, node] of curr.to) {
 				this.actions.push(hlNode, [node]);
 				this.actions.tail.push(uhlNode, [prev]);
-				this.actions.tail.push(writeFindLetMism, [node, str, i]);
 
 				prev = node;
 				if (ch === char) {
+					this.actions.tail.push(writeFindLetMatch, [node, str, i]);
 					break;
+				} else {
+					this.actions.tail.push(writeFindLetMism, [node, str, i]);
 				}
 			}
 
@@ -168,7 +174,7 @@ class AhoCorasick {
 				this.actions.push(uhlNode, [curr]);
 				this.actions.tail.push(writeFinishAdd, [curr, str]);
 			} else {
-				this.actions.tail.push(hlNode, [curr]);
+				// this.actions.tail.push(hlNode, [curr]);
 			}
 		}
 
@@ -179,46 +185,47 @@ class AhoCorasick {
 		return this.actions;
 	}
 
-	link = (TrieNode) => {
-		this.actions.tail.push(hlNode, [TrieNode]);
+	link = (TrieNode, str, idx) => {
+		this.actions.push(hlNode, [TrieNode]);
 
-		this.actions.push(writeLink, [TrieNode]);
+		this.actions.tail.push(writeLink, [TrieNode, str, idx]);
 
 		if (TrieNode.link === null) {
 			if (TrieNode === this.root || TrieNode.parent === this.root) {
 				TrieNode.link = this.root;
 			} else {
-				TrieNode.link = this.go(this.link(TrieNode.parent), TrieNode.char);
+				TrieNode.link = this.go(this.link(TrieNode.parent, str, idx), TrieNode.char, str, idx);
 			}
 		}
 
 		this.actions.push(hlLink, [TrieNode]);
-		this.actions.tail.push(writeCalcLink, [TrieNode]);
+		this.actions.tail.push(writeCalcLink, [TrieNode, str, idx]);
 
 		this.actions.push(uhlLink, [TrieNode]);
 		this.actions.tail.push(uhlNode, [TrieNode]);
 		return TrieNode.link;
 	}
 
-	go = (TrieNode, char) => {
+	go = (TrieNode, char, str, idx) => {
 		this.actions.tail.push(hlNode, [TrieNode]);
 
 		if (!TrieNode.go.has(char)) {
-			this.actions.tail.push(writeNoGo, [TrieNode, char]);
+			this.actions.tail.push(writeNoGo, [TrieNode, char, str, idx]);
 
 			if (TrieNode.to.has(char)) {
 				TrieNode.go.set(char, TrieNode.to.get(char));
 			} else if (TrieNode === this.root) {
 				TrieNode.go.set(char, this.root);
 			} else {
-				let currLink = this.link(TrieNode);
+				let currLink = this.link(TrieNode, str, idx);
 				TrieNode.go.set(char, this.go(currLink, char));
+				this.actions.tail.push(hlNode, [TrieNode]);
 			}
 
 			this.actions.push(addGo, [TrieNode, char]);
-			this.actions.tail.push(writeCalcGo, [TrieNode, char]);
+			this.actions.tail.push(writeCalcGo, [TrieNode, char, str, idx]);
 		} else {
-			this.actions.tail.push(writeIsGo, [TrieNode, char]);
+			this.actions.tail.push(writeIsGo, [TrieNode, char, str, idx]);
 		}
 		this.actions.tail.push(hlGo, [TrieNode, char]);
 
@@ -231,9 +238,9 @@ class AhoCorasick {
 	linkC = (TrieNode) => {
 		if (TrieNode.link === null) {
 			if (TrieNode === this.root || TrieNode.parent === this.root) {
-				TrieNode.link = this.root;
+				return  this.root;
 			} else {
-				TrieNode.link = this.goC(this.linkC(TrieNode.parent), TrieNode.char);
+				return this.goC(this.linkC(TrieNode.parent), TrieNode.char);
 			}
 		}
 		return TrieNode.link;
@@ -242,12 +249,12 @@ class AhoCorasick {
 	goC = (TrieNode, char) => {
 		if (!TrieNode.go.has(char)) {
 			if (TrieNode.to.has(char)) {
-				TrieNode.go.set(char, TrieNode.to.get(char));
+				return TrieNode.to.get(char);
 			} else if (TrieNode === this.root) {
-				TrieNode.go.set(char, this.root);
+				return this.root;
 			} else {
 				let currLink = this.linkC(TrieNode);
-				TrieNode.go.set(char, this.goC(currLink, char));
+				return this.goC(currLink, char);
 			}
 		}
 		return TrieNode.go.get(char);
@@ -287,7 +294,7 @@ class AhoCorasick {
 			this.actions.push(writeGo, [curr, str, i]);
 			this.actions.tail.push(hlNode, [curr]);
 
-			curr = this.go(curr, char);
+			curr = this.go(curr, char, str, i);
 			this.actions.tail.push(hlNode, [curr]);
 			this.actions.push(writeCheck, [curr, str, i]);
 

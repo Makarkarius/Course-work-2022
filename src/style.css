@@ -83,6 +83,7 @@ ul {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-y: auto;
 }
 
 .node-block {
@@ -129,7 +130,7 @@ td {
     width: 30px;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
     margin: 0;
     margin-block-start: 0;
     margin-block-end: 0;
@@ -147,11 +148,11 @@ h3 {
 }
 
 .hlNode {
-    background-color: red;
+    background-color: #FF5252;
 }
 
 r {
-    color: red;
+    color: #FF5252;
 }
 
 .node-name {
@@ -183,6 +184,7 @@ r {
     overflow: auto;
     width: 85%;
     border-radius: 4px;
+    min-height: 100px;
 }
 
 #dictionary>h3, #result>h3 {
@@ -231,6 +233,16 @@ button {
 
 input {
     font-family: Montserrat, sans-serif;
+}
+
+.about-algo {
+    margin: 20px 0 5px 0;
+    font-size: 16px;
+    width: 85%;
+}
+
+h4 {
+    font-size: 18px;
 }
 
 #add-input-submit, #find-input-submit {

@@ -178,10 +178,9 @@ const hlGo = (node, char, isReversed) => {
 			toPos.x + walker.nodeWidth,
 			toPos.y],
 		tension: 0.7,
-		stroke: 'red',
+		stroke: '#FF5252',
 		strokeWidth: 2,
-		fill: 'red',
-		opacity: 0.6
+		fill: '#FF5252'
 	});
 	nodeLayer.add(node.nodeGo);
 }
@@ -211,10 +210,9 @@ const hlLink = (node, isReversed) => {
 			toPos.x + walker.nodeWidth,
 			toPos.y],
 		tension: 0.7,
-		stroke: 'red',
+		stroke: '#FF5252',
 		strokeWidth: 2,
-		fill: 'red',
-		opacity: 0.6
+		fill: '#FF5252'
 	});
 	nodeLayer.add(node.nodeLink);
 }
@@ -266,6 +264,21 @@ const writeFindLet = (node, str, idx) => {
 											children or create a new node to build a trie.</p> 
 											<p>Let's iterate over current node's
 											children.</p>
+										</div>`
+	block.append(info);
+}
+
+const writeFindLetMatch = (node, str, idx) => {
+	let block = document.getElementById('info-block');
+	block.innerHTML = "";
+	let info = document.createElement("div");
+	info.classList.add("info");
+	info.innerHTML = `<h2>Word to add: ${getHlLet(str, idx)}</h2>
+										<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
+										<div class="info-text">
+											<p>We are visiting this node to find letter <r>${str.charAt(idx)}</r>.</p> 
+											<p>As you can see, this node contains the letter which we need.</p>
+											<p>Now we are visiting that node.<r>${str.charAt(idx)}</r>.</p>
 										</div>`
 	block.append(info);
 }
@@ -366,12 +379,13 @@ const writeGo = (node, str, idx) => {
 	block.append(info);
 }
 
-const writeNoGo = (node, char) => {
+const writeNoGo = (node, char, str, idx) => {
 	let block = document.getElementById('info-block');
 	block.innerHTML = "";
 	let info = document.createElement("div");
 	info.classList.add("info");
-	info.innerHTML = `<h2>Machine transition by ${char}</h2>
+	info.innerHTML = `<h2>Text to find in: ${getHlLet(str, idx)}</h2>
+										<h2>Machine transition by ${char}</h2>
 										<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
 										<div class="info-text">
 											<p>As we can see, there is no machine transition in this node by needed character.</p>
@@ -386,12 +400,13 @@ const writeNoGo = (node, char) => {
 	block.append(info);
 }
 
-const writeIsGo = (node, char) => {
+const writeIsGo = (node, char, str, idx) => {
 	let block = document.getElementById('info-block');
 	block.innerHTML = "";
 	let info = document.createElement("div");
 	info.classList.add("info");
-	info.innerHTML = `<h2>Machine transition by ${char}</h2>
+	info.innerHTML = `<h2>Text to find in: ${getHlLet(str, idx)}</h2>
+										<h2>Machine transition by ${char}</h2>
 										<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
 										<div class="info-text">
 											<p>There is already calculate machine transition by character ${char}.</p>
@@ -401,12 +416,13 @@ const writeIsGo = (node, char) => {
 	block.append(info);
 }
 
-const writeCalcGo = (node, char) => {
+const writeCalcGo = (node, char, str, idx) => {
 	let block = document.getElementById('info-block');
 	block.innerHTML = "";
 	let info = document.createElement("div");
 	info.classList.add("info");
-	info.innerHTML = `<h2>Machine transition by ${char}</h2>
+	info.innerHTML = `<h2>Text to find in: ${getHlLet(str, idx)}</h2>
+										<h2>Machine transition by ${char}</h2>
 										<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
 										<div class="info-text">
 											<p>We have calculated machine transition in current node by character ${char}.</p>
@@ -416,12 +432,13 @@ const writeCalcGo = (node, char) => {
 	block.append(info);
 }
 
-const writeLink = (node) => {
+const writeLink = (node, str, idx) => {
 	let block = document.getElementById('info-block');
 	block.innerHTML = "";
 	let info = document.createElement("div");
 	info.classList.add("info");
-	info.innerHTML = `<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
+	info.innerHTML = `<h2>Text to find in: ${getHlLet(str, idx)}</h2>
+										<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
 										<div class="info-text">
 											<p>Now we have to calculate the suffix link from this node.</p>
 											<p>If current node is root or its parent is root, we set the link to root.</p>
@@ -432,12 +449,13 @@ const writeLink = (node) => {
 	block.append(info);
 }
 
-const writeCalcLink = (node) => {
+const writeCalcLink = (node, str, idx) => {
 	let block = document.getElementById('info-block');
 	block.innerHTML = "";
 	let info = document.createElement("div");
 	info.classList.add("info");
-	info.innerHTML = `<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
+	info.innerHTML = `<h2>Text to find in: ${getHlLet(str, idx)}</h2>
+										<h2>Current node: ${node.id + " " + (node.char == null ? "root" : node.char)}</h2>
 										<div class="info-text">
 											<p>We have calculated link in current.</p>
 											<p>link(node: ${node.id}) = ${node.link.id}</p>

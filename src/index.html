@@ -26,13 +26,13 @@
         </div>
         <form>
             <label>
-                <input type="text" id="add-input" maxlength="20" minlength="1">
+                <input type="text" id="add-input" maxlength="20" minlength="1" placeholder="English letters">
                 <input type="submit" value="Add" id="add-input-submit">
             </label>
         </form>
         <form>
             <label>
-                <input type="text" id="find-input" maxlength="100" minlength="1">
+                <input type="text" id="find-input" maxlength="100" minlength="1" placeholder="Text">
                 <input type="submit" value="Find" id="find-input-submit">
             </label>
         </form>
@@ -41,11 +41,21 @@
         <div id="dictionary"></div>
         <h2>Result</h2>
         <div id="result"></div>
+
+        <div class="about-algo">
+            <h4>Information</h4>Aho–Corasick algorithm is a string-searching algorithm that locates all entries of elements of a finite set
+            of strings (the "dictionary") within an input text.
+            <p>Algorithm constructs a finite-state machine that resembles a <a target="_blank" href="https://en.wikipedia.org/wiki/Trie">trie</a> with additional suffix links between the
+                various internal nodes to other branches of the trie that share a common prefix.
+                These links allow fast transitions between failed string matches.</p>
+            <h4>Complexity</h4>If storing transitions as an array:<br>Memory: O(n * δ)<br> Search: O(nδ + H + k)
+            <p>If storing transitions as R-B Tree:<br>Memory: O(n)<br>Search: O((H+n)log δ + k)</p>
+            H - text length, n - summary length of words in dictionary, δ - alphabet size, k - summary length of word matches.
+
+        </div>
     </div>
 </div>
 <script src="https://unpkg.com/konva@8/konva.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
 <script src="script/init.js"></script>
 <script src="script/util.js"></script>
 <script src="script/actions.js"></script>

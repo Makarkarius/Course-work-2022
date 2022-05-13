@@ -52,23 +52,25 @@ class Controller {
 			return;
 		}
 		if (this.actions.isNext()) {
-			$('#next-step').prop('disabled', false);
+			document.getElementById('next-step').removeAttribute('disabled');
 		} else {
-			$('#next-step').prop('disabled', true);
+			document.getElementById('next-step').setAttribute('disabled', 'disabled');
 		}
 
 		if (this.actions.isPrev()) {
-			$('#prev-step').prop('disabled', false);
+			document.getElementById('prev-step').removeAttribute('disabled');
 		} else {
-			$('#prev-step').prop('disabled', true);
+			document.getElementById('prev-step').setAttribute('disabled', 'disabled');
 		}
 
 		for (let act of action) {
 			if (act.func === null) {
 				continue;
 			}
+			console.log(act.func.name);
 			act.func(...act.args, isReversed);
 		}
+		console.log("--------------------");
 
 		if (isReversed) {
 			for (let act of prev) {
@@ -76,9 +78,9 @@ class Controller {
 					continue;
 				}
 
-				console.log(act.func.name);
+				// console.log(act.func.name);
 				if (act.func.name.slice(0, 5) === "write") {
-					console.log(act.func.name);
+					// console.log(act.func.name);
 					act.func(...act.args, isReversed);
 					break;
 				}
